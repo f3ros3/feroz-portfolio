@@ -106,15 +106,16 @@
   }
 
   /* ---------- layout shell ---------- */
-  main{ position:relative; z-index:1; min-height:100vh; }
+  main{ position:relative; z-index:1; }
   .page{
-    display:none; min-height:100vh;
-    padding: 140px 8vw 90px;
-    opacity:0; transform:translateY(14px);
-    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    padding: 130px 8vw 90px;
+    scroll-margin-top: 110px;
+    opacity:0; transform:translateY(24px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
   }
-  .page.active{ display:block; }
   .page.show{ opacity:1; transform:translateY(0); }
+  #home{ padding-top:150px; }
 
   .eyebrow{
     display:inline-flex; align-items:center; gap:8px;
@@ -128,6 +129,7 @@
     display:grid; grid-template-columns: 1.1fr 0.9fr; gap:60px; align-items:center;
     max-width:1240px; margin:0 auto;
   }
+  .hero.hero-solo{ grid-template-columns:1fr; max-width:680px; }
   .hero h1{ font-size:clamp(40px, 5.4vw, 68px); font-weight:800; line-height:1.05; }
   .hero h1 .accent{ color:var(--cyan); }
   .hero-role{ margin-top:16px; font-size:18px; color:var(--muted); font-weight:500; }
@@ -166,21 +168,6 @@
     font-family:'JetBrains Mono',monospace; font-size:10.5px; padding:5px 10px; border-radius:999px;
     background:var(--cyan-dim); color:var(--cyan); border:1px solid rgba(73,214,200,0.3);
   }
-  .bars{ display:flex; align-items:flex-end; gap:14px; height:120px; padding:0 4px; }
-  .bar{ flex:1; border-radius:6px 6px 2px 2px; background:linear-gradient(180deg, var(--cyan), rgba(73,214,200,0.25)); transform-origin:bottom; transform:scaleY(0); animation: growBar 1s var(--ease) forwards; }
-  .bar:nth-child(1){ height:52%; animation-delay:0.3s; }
-  .bar:nth-child(2){ height:78%; animation-delay:0.42s; background:linear-gradient(180deg, var(--violet), rgba(140,124,240,0.25)); }
-  .bar:nth-child(3){ height:38%; animation-delay:0.54s; }
-  .bar:nth-child(4){ height:92%; animation-delay:0.66s; background:linear-gradient(180deg, var(--amber), rgba(242,169,59,0.25)); }
-  .bar:nth-child(5){ height:64%; animation-delay:0.78s; }
-  @keyframes growBar{ to{ transform:scaleY(1); } }
-  .bar-labels{ display:flex; gap:14px; padding:0 4px; margin-top:8px; }
-  .bar-labels span{ flex:1; text-align:center; font-size:10px; color:var(--muted-2); font-family:'JetBrains Mono',monospace; }
-
-  .dash-kpis{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:22px; }
-  .kpi{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:12px 10px; text-align:center; }
-  .kpi .num{ font-family:'Sora',sans-serif; font-weight:700; font-size:19px; color:var(--cyan); }
-  .kpi .lbl{ font-size:9.5px; color:var(--muted-2); margin-top:3px; letter-spacing:0.02em; }
 
   /* ---------- EXPERIENCE ---------- */
   .section-head{ max-width:640px; margin:0 auto 50px; text-align:left; }
@@ -206,17 +193,50 @@
   .tl-list li{ font-size:14.5px; line-height:1.6; color:var(--muted); padding-left:18px; position:relative; }
   .tl-list li::before{ content:'—'; position:absolute; left:0; color:var(--muted-2); }
 
+  .bars{ display:flex; align-items:flex-end; gap:14px; height:120px; padding:0 4px; }
+  .bar{ flex:1; border-radius:6px 6px 2px 2px; background:linear-gradient(180deg, var(--cyan), rgba(73,214,200,0.25)); transform-origin:bottom; transform:scaleY(0); animation: growBar 1s var(--ease) forwards; }
+  .bar:nth-child(1){ height:52%; animation-delay:0.3s; }
+  .bar:nth-child(2){ height:78%; animation-delay:0.42s; background:linear-gradient(180deg, var(--violet), rgba(140,124,240,0.25)); }
+  .bar:nth-child(3){ height:38%; animation-delay:0.54s; }
+  .bar:nth-child(4){ height:92%; animation-delay:0.66s; background:linear-gradient(180deg, var(--amber), rgba(242,169,59,0.25)); }
+  .bar:nth-child(5){ height:64%; animation-delay:0.78s; }
+  @keyframes growBar{ to{ transform:scaleY(1); } }
+  .bar-labels{ display:flex; gap:14px; padding:0 4px; margin-top:8px; }
+  .bar-labels span{ flex:1; text-align:center; font-size:10px; color:var(--muted-2); font-family:'JetBrains Mono',monospace; }
+  .dash-kpis{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:22px; }
+  .kpi{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:12px 10px; text-align:center; }
+  .kpi .num{ font-family:'Sora',sans-serif; font-weight:700; font-size:19px; color:var(--cyan); }
+  .kpi .lbl{ font-size:9.5px; color:var(--muted-2); margin-top:3px; letter-spacing:0.02em; }
+
+  /* skill proficiency panel (in Experience) */
+  .skills-panel{ position:relative; max-width:900px; margin:0 auto; padding:10px 0 30px; }
+  .skills-scatter{ position:absolute; inset:-50px; z-index:0; pointer-events:none; overflow:hidden; }
+  .skills-card{ position:relative; z-index:1; max-width:620px; margin:0 auto; }
+  .skill-bars{ display:flex; flex-direction:column; gap:17px; margin-top:4px; }
+  .skill-row-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:7px; }
+  .skill-name{ font-size:13.5px; font-weight:600; color:var(--text); }
+  .skill-pct{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--cyan); }
+  .skill-track{ height:8px; border-radius:999px; background:rgba(255,255,255,0.06); border:1px solid var(--border-soft); overflow:hidden; }
+  .skill-fill{
+    height:100%; width:0%; border-radius:999px;
+    background:linear-gradient(90deg, var(--cyan), var(--violet));
+    box-shadow:0 0 12px rgba(73,214,200,0.35);
+    transition: width 1.4s var(--ease);
+  }
+
   /* tech stack */
   .tech-section{ position:relative; max-width:1100px; margin:0 auto; padding:40px 0 20px; }
   .tech-scatter{ position:absolute; inset:-40px; z-index:0; pointer-events:none; overflow:hidden; }
-  .float-badge{
-    position:absolute; font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px;
-    padding:10px 16px; border-radius:12px; filter:blur(5px); opacity:0.4;
+  .float-logo{
+    position:absolute; width:46px; height:46px; padding:10px; border-radius:14px;
+    background:rgba(255,255,255,0.05); filter:blur(5px); opacity:0.4;
     animation: drift ease-in-out infinite;
   }
+  .float-logo img{ width:100%; height:100%; object-fit:contain; filter:brightness(0) invert(1); }
   @keyframes drift{ 0%,100%{ transform:translate(0,0) rotate(0deg);} 50%{ transform:translate(16px,-20px) rotate(4deg);} }
 
   .tech-grid{ position:relative; z-index:1; display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:16px; }
+  .tech-grid-3x3{ grid-template-columns:repeat(3,1fr); max-width:720px; margin:0 auto; }
   .tech-badge{
     display:flex; align-items:center; gap:12px;
     background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-md);
@@ -226,8 +246,10 @@
   .tech-badge:hover{ transform:translateY(-4px); border-color:var(--border); background:var(--surface-strong); }
   .tech-icon{
     width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center;
-    font-family:'JetBrains Mono',monospace; font-weight:700; font-size:11px; color:#04140F; flex-shrink:0;
+    background:rgba(255,255,255,0.06); flex-shrink:0; padding:8px;
   }
+  .tech-icon img{ width:100%; height:100%; object-fit:contain; }
+  .icon-invert{ filter:brightness(0) invert(1) opacity(0.9); }
   .tech-name{ font-size:14px; font-weight:600; }
   .tech-sub{ font-size:11px; color:var(--muted-2); margin-top:1px; }
 
@@ -311,6 +333,7 @@
     .nav-tab.active .label{ font-size:11px; }
     .form-row{ flex-direction:column; gap:14px; }
     .contact-card{ padding:30px 22px 24px; }
+    .tech-grid-3x3{ grid-template-columns:1fr; }
   }
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; transition:none !important; }
@@ -346,8 +369,8 @@
 <main>
 
   <!-- HOME -->
-  <section id="home" class="page active">
-    <div class="hero">
+  <section id="home" class="page">
+    <div class="hero hero-solo">
       <div class="rise" style="animation-delay:.05s">
         <span class="eyebrow">Data &amp; Quality Analyst</span>
         <h1>Hi, I'm <span class="accent">Feroz</span>.<br>I turn messy data into clear decisions.</h1>
@@ -361,25 +384,6 @@
           <div class="stat"><div class="num">5+</div><div class="label">Years experience</div></div>
           <div class="stat"><div class="num">CPM</div><div class="label">Team @ Amazon</div></div>
           <div class="stat"><div class="num">SQL · Py</div><div class="label">Core toolkit</div></div>
-        </div>
-      </div>
-
-      <div class="dash-card rise" style="animation-delay:.18s">
-        <div class="dash-top">
-          <div>
-            <div class="dash-title">Concession Quality Overview</div>
-            <div class="dash-sub">preview · dashboard mockup</div>
-          </div>
-          <span class="dash-pill">● live view</span>
-        </div>
-        <div class="bars">
-          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-        </div>
-        <div class="bar-labels"><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span></div>
-        <div class="dash-kpis">
-          <div class="kpi"><div class="num" data-count="97">0</div><div class="lbl">ACCURACY %</div></div>
-          <div class="kpi"><div class="num" data-count="12">0</div><div class="lbl">SOPs LIVE</div></div>
-          <div class="kpi"><div class="num" data-count="8">0</div><div class="lbl">RCAs/MO</div></div>
         </div>
       </div>
     </div>
@@ -429,6 +433,28 @@
       </div>
     </div>
 
+    <div class="skills-panel rise" style="animation-delay:.2s">
+      <div class="skills-scatter" id="skillsScatter"></div>
+      <div class="dash-card skills-card">
+        <div class="dash-top">
+          <div>
+            <div class="dash-title">Concession Quality Overview</div>
+            <div class="dash-sub">preview · dashboard mockup</div>
+          </div>
+          <span class="dash-pill">● live view</span>
+        </div>
+        <div class="bars">
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
+        <div class="bar-labels"><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span></div>
+        <div class="dash-kpis">
+          <div class="kpi"><div class="num" data-count="97">0</div><div class="lbl">ACCURACY %</div></div>
+          <div class="kpi"><div class="num" data-count="12">0</div><div class="lbl">SOPs LIVE</div></div>
+          <div class="kpi"><div class="num" data-count="8">0</div><div class="lbl">RCAs/MO</div></div>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <!-- TECH STACK -->
@@ -440,13 +466,16 @@
     </div>
     <div class="tech-section rise" style="animation-delay:.1s">
       <div class="tech-scatter" id="techScatter"></div>
-      <div class="tech-grid">
-        <div class="tech-badge"><div class="tech-icon" style="background:#F2A93B;">AWS</div><div><div class="tech-name">AWS</div><div class="tech-sub">Cloud &amp; data services</div></div></div>
-        <div class="tech-badge"><div class="tech-icon" style="background:#F2C94C;">Pbi</div><div><div class="tech-name">Power BI</div><div class="tech-sub">Dashboards &amp; reporting</div></div></div>
-        <div class="tech-badge"><div class="tech-icon" style="background:#49D6C8;">SQL</div><div><div class="tech-name">SQL</div><div class="tech-sub">Querying &amp; data prep</div></div></div>
-        <div class="tech-badge"><div class="tech-icon" style="background:#4A90D9;">Py</div><div><div class="tech-name">Python</div><div class="tech-sub">Automation &amp; analysis</div></div></div>
-        <div class="tech-badge"><div class="tech-icon" style="background:#8C7CF0;">pd</div><div><div class="tech-name">Pandas</div><div class="tech-sub">Data wrangling</div></div></div>
-        <div class="tech-badge"><div class="tech-icon" style="background:#2FBF71;">XL</div><div><div class="tech-name">Excel</div><div class="tech-sub">Modeling &amp; reporting</div></div></div>
+      <div class="tech-grid tech-grid-3x3">
+        <div class="tech-badge"><div class="tech-icon"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/postgresql.svg" alt="SQL" class="icon-invert"></div><div><div class="tech-name">SQL</div><div class="tech-sub">Querying &amp; data prep</div></div></div>
+        <div class="tech-badge"><div class="tech-icon"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/python.svg" alt="Python" class="icon-invert"></div><div><div class="tech-name">Python</div><div class="tech-sub">Automation &amp; analysis</div></div></div>
+        <div class="tech-badge"><div class="tech-icon"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/amazonaws.svg" alt="AWS" class="icon-invert"></div><div><div class="tech-name">AWS</div><div class="tech-sub">Cloud &amp; data services</div></div></div>
+        <div class="tech-badge"><div class="tech-icon"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/amazons3.svg" alt="Amazon S3" class="icon-invert"></div><div><div class="tech-name">Amazon S3</div><div class="tech-sub">Data storage</div></div></div>
+        <div class="tech-badge"><div class="tech-icon"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/amazonec2.svg" alt="Amazon EC2" class="icon-invert"></div><div><div class="tech-name">Amazon EC2</div><div class="tech-sub">Compute</div></div></div>
+        <div class="tech-badge"><div class="tech-icon"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/powerbi.svg" alt="Power BI" class="icon-invert"></div><div><div class="tech-name">Power BI</div><div class="tech-sub">Dashboards &amp; reporting</div></div></div>
+        <div class="tech-badge"><div class="tech-icon"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/microsoftexcel.svg" alt="Excel" class="icon-invert"></div><div><div class="tech-name">Excel</div><div class="tech-sub">Modeling &amp; reporting</div></div></div>
+        <div class="tech-badge"><div class="tech-icon"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/pandas.svg" alt="Pandas" class="icon-invert"></div><div><div class="tech-name">Pandas</div><div class="tech-sub">Data wrangling</div></div></div>
+        <div class="tech-badge"><div class="tech-icon"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/docker.svg" alt="Docker" class="icon-invert"></div><div><div class="tech-name">Docker</div><div class="tech-sub">Containerized workflows</div></div></div>
       </div>
     </div>
   </section>
@@ -512,34 +541,49 @@
 <footer>© <span id="year"></span> Feroz · Data &amp; Quality Analyst</footer>
 
 <script>
-  // ---------- tab navigation ----------
+  // ---------- scroll-based navigation ----------
   const tabs = document.querySelectorAll('.nav-tab');
   const pages = document.querySelectorAll('.page');
 
   function goTo(name){
-    const targetBtn = document.querySelector('.nav-tab[data-tab="'+name+'"]');
-    tabs.forEach(t => t.classList.remove('active'));
-    targetBtn.classList.add('active');
-
-    pages.forEach(p => {
-      if(p.id === name){
-        p.classList.add('active');
-        requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add('show')));
-      } else {
-        p.classList.remove('show');
-        setTimeout(() => { if(!p.classList.contains('show')) p.classList.remove('active'); }, 480);
-      }
-    });
-
-    if(name === 'home') startCountUp();
+    const target = document.getElementById(name);
+    if(target) target.scrollIntoView({ behavior:'smooth', block:'start' });
   }
 
   tabs.forEach(btn => btn.addEventListener('click', () => goTo(btn.dataset.tab)));
 
+  // reveal each section (and its .rise children) the first time it enters view
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('show');
+        if(entry.target.id === 'experience') startCountUp();
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  pages.forEach(p => revealObserver.observe(p));
+
+  // highlight the nav tab for whichever section is centered in the viewport
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const id = entry.target.id;
+        tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === id));
+      }
+    });
+  }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+  pages.forEach(p => navObserver.observe(p));
+
   window.addEventListener('load', () => {
-    document.getElementById('home').classList.add('show');
-    startCountUp();
-    scatterTechBadges();
+    const S = 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/';
+    const stack = [
+      {t:'SQL', src:S+'postgresql.svg'}, {t:'Python', src:S+'python.svg'}, {t:'AWS', src:S+'amazonaws.svg'},
+      {t:'Amazon S3', src:S+'amazons3.svg'}, {t:'Amazon EC2', src:S+'amazonec2.svg'}, {t:'Power BI', src:S+'powerbi.svg'},
+      {t:'Excel', src:S+'microsoftexcel.svg'}, {t:'Pandas', src:S+'pandas.svg'}, {t:'Docker', src:S+'docker.svg'}
+    ];
+    scatterBadges('techScatter', stack);
+    scatterBadges('skillsScatter', stack);
   });
 
   // ---------- KPI count-up ----------
@@ -560,20 +604,16 @@
   }
 
   // ---------- scattered blurred tech badges (ambient bg) ----------
-  function scatterTechBadges(){
-    const wrap = document.getElementById('techScatter');
-    const items = [
-      {t:'AWS', c:'#F2A93B'}, {t:'SQL', c:'#49D6C8'}, {t:'Python', c:'#4A90D9'},
-      {t:'Pandas', c:'#8C7CF0'}, {t:'Power BI', c:'#F2C94C'}, {t:'Excel', c:'#2FBF71'},
-      {t:'AWS', c:'#F2A93B'}, {t:'SQL', c:'#49D6C8'}
-    ];
-    items.forEach((it, i) => {
+  function scatterBadges(containerId, items){
+    const wrap = document.getElementById(containerId);
+    if(!wrap) return;
+    items.forEach((it) => {
       const b = document.createElement('div');
-      b.className = 'float-badge';
-      b.textContent = it.t;
-      b.style.color = it.c;
-      b.style.border = '1px solid ' + it.c + '55';
-      b.style.background = it.c + '14';
+      b.className = 'float-logo';
+      const img = document.createElement('img');
+      img.src = it.src;
+      img.alt = it.t;
+      b.appendChild(img);
       b.style.top = (Math.random() * 80) + '%';
       b.style.left = (Math.random() * 92) + '%';
       b.style.animationDuration = (7 + Math.random() * 6) + 's';
